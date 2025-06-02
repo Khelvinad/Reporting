@@ -1,0 +1,60 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Uni-report" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a5362647-7e46-4c48-8889-86d8dd1559a0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="University-DB"/>
+	<query language="SQL"><![CDATA[SELECT * 
+FROM instructor I 
+JOIN department d 
+ON i.dept_name = d.dept_name 
+ORDER BY i.dept_name ASC, i.name ASC;
+]]></query>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+	</field>
+	<field name="dept_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dept_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="dept_name"/>
+	</field>
+	<field name="salary" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="salary"/>
+		<property name="com.jaspersoft.studio.field.label" value="salary"/>
+	</field>
+	<field name="ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID"/>
+	</field>
+	<field name="building" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="building"/>
+		<property name="com.jaspersoft.studio.field.label" value="building"/>
+	</field>
+	<field name="budget" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="budget"/>
+		<property name="com.jaspersoft.studio.field.label" value="budget"/>
+	</field>
+	<group name="name">
+		<expression><![CDATA[$F{name}]]></expression>
+	</group>
+	<group name="salary">
+		<expression><![CDATA[$F{salary}]]></expression>
+	</group>
+	<group name="ID">
+		<expression><![CDATA[$F{ID}]]></expression>
+	</group>
+	<group name="building">
+		<expression><![CDATA[$F{building}]]></expression>
+	</group>
+	<group name="budget">
+		<expression><![CDATA[$F{budget}]]></expression>
+	</group>
+	<background splitType="Stretch"/>
+	<title height="79" splitType="Stretch"/>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="61" splitType="Stretch"/>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>
