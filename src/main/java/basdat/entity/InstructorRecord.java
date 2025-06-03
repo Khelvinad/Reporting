@@ -1,16 +1,16 @@
-package basdat.model;
+package basdat.entity;
 
 import java.math.BigDecimal;
 
-public class Instructor {
+public class InstructorRecord {
     private String id;
     private String name;
     private String deptName;
     private BigDecimal salary;
 
-    public Instructor() {}
+    public InstructorRecord() {}
 
-    public Instructor(String id, String name, String deptName, BigDecimal salary) {
+    public InstructorRecord(String id, String name, String deptName, BigDecimal salary) {
         this.id = id;
         this.name = name;
         this.deptName = deptName;
@@ -28,7 +28,7 @@ public class Instructor {
 
     @Override
     public String toString() {
-        return "Instructor{" +
+        return "InstructorRecord{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", deptName='" + deptName + '\'' +

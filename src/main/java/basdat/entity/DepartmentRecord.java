@@ -1,9 +1,9 @@
-package basdat.model;
+package basdat.entity;
 
-public class dept {
+public class DepartmentRecord {
     private String deptName;
 
-    public dept(String deptName) {
+    public DepartmentRecord(String deptName) {
         this.deptName = deptName;
     }
 

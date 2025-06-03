@@ -1,11 +1,23 @@
-package basdat.view;
+package basdat.ui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class InstructorDialog extends JDialog {
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class InstructorFormDialog extends JDialog {
     private JTextField idField;
     private JTextField nameField;
     private JComboBox<String> deptNameComboBox;
@@ -16,7 +28,7 @@ public class InstructorDialog extends JDialog {
     private boolean confirmed = false;
     private String currentIdForEdit = null;
 
-    public InstructorDialog(Frame owner, String title, boolean modal, List<String> departmentNames) {
+    public InstructorFormDialog(Frame owner, String title, boolean modal, List<String> departmentNames) {
         super(owner, title, modal);
         initComponents(departmentNames);
         pack();
@@ -29,16 +41,15 @@ public class InstructorDialog extends JDialog {
         deptNameComboBox = new JComboBox<>(departmentNames.toArray(new String[0]));
         salaryField = new JTextField(10);
 
-        saveButton = new JButton("Simpan");
-        cancelButton = new JButton("Batal");
-
+        saveButton = new JButton("Save");
+        cancelButton = new JButton("Cancel");
         saveButton.addActionListener(e -> {
             if (getNameInput().isEmpty() || getSalaryInput() == null) {
-                JOptionPane.showMessageDialog(this, "Nama dan Gaji tidak boleh kosong, dan Gaji harus angka.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Name and Salary must not be empty, and Salary must be a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (getIdInput().isEmpty() && currentIdForEdit == null) {
-                JOptionPane.showMessageDialog(this, "ID tidak boleh kosong.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ID must not be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             confirmed = true;
@@ -58,13 +69,13 @@ public class InstructorDialog extends JDialog {
         gbc.gridx = 0; gbc.gridy = 0; panel.add(new JLabel("ID:"), gbc);
         gbc.gridx = 1; gbc.gridy = 0; panel.add(idField, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 1; panel.add(new JLabel("Nama:"), gbc);
+        gbc.gridx = 0; gbc.gridy = 1; panel.add(new JLabel("Name:"), gbc);
         gbc.gridx = 1; gbc.gridy = 1; panel.add(nameField, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 2; panel.add(new JLabel("Departemen:"), gbc);
+        gbc.gridx = 0; gbc.gridy = 2; panel.add(new JLabel("Department:"), gbc);
         gbc.gridx = 1; gbc.gridy = 2; panel.add(deptNameComboBox, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 3; panel.add(new JLabel("Gaji:"), gbc);
+        gbc.gridx = 0; gbc.gridy = 3; panel.add(new JLabel("Salary:"), gbc);
         gbc.gridx = 1; gbc.gridy = 3; panel.add(salaryField, gbc);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -78,22 +89,37 @@ public class InstructorDialog extends JDialog {
     }
 
     public void prepareForAdd(List<String> departmentNames) {
-        setTitle("Tambah Dosen");
+        setTitle("Add Instructor");
         idField.setText("");
         idField.setEnabled(true);
         nameField.setText("");
         salaryField.setText("");
-        if (!departmentNames.isEmpty()) deptNameComboBox.setSelectedIndex(0);
+        if (deptNameComboBox.getItemCount() > 0 && !departmentNames.isEmpty()) {
+             deptNameComboBox.setSelectedIndex(0);
+        } else if (deptNameComboBox.getItemCount() == 0 && departmentNames != null && !departmentNames.isEmpty()) {
+            deptNameComboBox.removeAllItems();
+            for (String deptName : departmentNames) {
+                deptNameComboBox.addItem(deptName);
+            }
+            if (deptNameComboBox.getItemCount() > 0) deptNameComboBox.setSelectedIndex(0);
+        }
         currentIdForEdit = null;
         confirmed = false;
     }
 
     public void prepareForEdit(String id, String name, String deptName, BigDecimal salary, List<String> departmentNames) {
-        setTitle("Edit Dosen");
+        setTitle("Edit Instructor");
         currentIdForEdit = id;
         idField.setText(id);
         idField.setEnabled(false);
         nameField.setText(name);
+        if(departmentNames != null) {
+            DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) deptNameComboBox.getModel();
+            model.removeAllElements();
+            for (String dn : departmentNames) {
+                model.addElement(dn);
+            }
+        }
         deptNameComboBox.setSelectedItem(deptName);
         salaryField.setText(salary != null ? salary.toPlainString() : "");
         confirmed = false;
@@ -106,7 +132,9 @@ public class InstructorDialog extends JDialog {
     public String getSelectedDeptName() { return (String) deptNameComboBox.getSelectedItem(); }
     public BigDecimal getSalaryInput() {
         try {
-            return new BigDecimal(salaryField.getText().trim());
+            String text = salaryField.getText().trim();
+            if (text.isEmpty()) return null;
+            return new BigDecimal(text);
         } catch (NumberFormatException e) {
             return null;
         }
