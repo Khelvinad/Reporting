@@ -48,6 +48,7 @@ public class MainWindow extends JFrame {
         instructorTable.setRowHeight(25);
         instructorTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
         instructorTable.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        instructorTable.setSelectionBackground(Color.BLACK);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
